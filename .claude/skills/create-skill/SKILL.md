@@ -4,6 +4,8 @@ description: |
   Agent Skills標準に準拠したスキルを作成し、distディレクトリに出力する。
   ユーザーが「スキルを作りたい」「スキルを作成して」と言ったとき、
   または /create-skill コマンドで呼び出されたときに使用する。
+  スキル以外のファイル作成には使用しない。
+argument-hint: [作りたいスキルの説明]
 allowed-tools: Read, Grep, Glob, Write, Edit
 ---
 
@@ -13,15 +15,23 @@ allowed-tools: Read, Grep, Glob, Write, Edit
 
 ## 手順
 
-### 1. ドキュメントの読み込み（必須）
+### 1. 公式ドキュメントの読み込み（必須・最優先）
 
-**スキル作成前に、`references/` ディレクトリ以下のすべてのドキュメントを読むこと。**
+> **重要**: `references/` ディレクトリには各ツールの**公式ドキュメント**が含まれている。
+> スキル作成の**ベストプラクティス**が記載されているため、**必ず最初に読むこと**。
 
-このスキルの `references/` ディレクトリには以下のドキュメントが含まれている:
-- `references/agent-skills/` - Agent Skills 標準仕様（必須）
-- `references/claude-code/` - Claude Code のスキル拡張機能
-- `references/gemini-cli/` - Gemini CLI の Agent Skills
-- `references/openai-codex/` - OpenAI Codex の Agent Skills
+このスキルの `references/` ディレクトリには以下の公式ドキュメントが含まれている:
+
+| ディレクトリ | 内容 | 特に参照すべき情報 |
+|-------------|------|-------------------|
+| `references/agent-skills/` | **Agent Skills 標準仕様**（必須） | `name`/`description` の書き方、ディレクトリ構造、良い例・悪い例 |
+| `references/claude-code/` | Claude Code 公式ドキュメント | frontmatter フィールド、`allowed-tools`、`context: fork` |
+| `references/gemini-cli/` | Gemini CLI 公式ドキュメント | スキルの発見・有効化の仕組み |
+| `references/openai-codex/` | OpenAI Codex 公式ドキュメント | `agents/openai.yaml` の設定 |
+
+**これらのドキュメントには、スキル作成時の具体的な例やアンチパターンが記載されている。**
+独自の判断で作成せず、ドキュメントに沿って作成すること。
+
 
 ### 2. 要件の分析
 
