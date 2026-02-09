@@ -94,7 +94,41 @@ description: |
 - よくある間違い
 ```
 
-### 6. 検証
+### 6. Claude Code 用 frontmatter フィールド
+
+標準フィールド（`name`, `description`）に加えて、Claude Code特有のフィールドを必要に応じて追加:
+
+#### `allowed-tools`（推奨）
+スキル実行中に許可なく使えるツールを指定。UXを大きく左右するため、必要なツールがあれば積極的に追加。
+
+```yaml
+allowed-tools: Read, Grep, Glob, Bash(git *)
+```
+
+#### `disable-model-invocation`
+`true`にするとClaudeが自動呼び出しせず、`/name`での手動呼び出しのみになる。
+デプロイ、送信、削除など**副作用のあるスキルには必須**。
+
+```yaml
+disable-model-invocation: true
+```
+
+#### `argument-hint`（必要に応じて）
+オートコンプリート時に表示されるヒント。引数を受け取るスキルに追加。
+
+```yaml
+argument-hint: [issue-number]
+```
+
+#### `context`（必要に応じて）
+`fork`を指定するとサブエージェントとして独立実行。リサーチ系など重い処理に有用。
+
+```yaml
+context: fork
+agent: Explore  # Explore, Plan, general-purpose などを指定
+```
+
+### 7. 検証
 
 - [ ] name がディレクトリ名と一致しているか
 - [ ] description が1024文字以内か
@@ -102,3 +136,5 @@ description: |
 - [ ] description が十分に具体的か（他のスキルと混同されないか）
 - [ ] SKILL.md が500行以内か
 - [ ] 手順が明確で実行可能か
+- [ ] 副作用のあるスキルに `disable-model-invocation: true` が設定されているか
+- [ ] 頻繁に使うツールがあれば `allowed-tools` が設定されているか
